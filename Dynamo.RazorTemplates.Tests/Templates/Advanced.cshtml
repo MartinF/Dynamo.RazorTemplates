@@ -1,0 +1,9 @@
+﻿@helper Advanced_Tmpl(int count)
+{
+	for (var i = 0; i < count; i++)
+	{
+		<h1>Extremly Simple - @i</h1>
+		<div>@(i + 100 * 0.5)</div>
+		@(i == 3 ? "equals 3" : "not equal 3" )
+	}
+}
