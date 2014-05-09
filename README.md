@@ -32,5 +32,5 @@ Please report any errors you find.
 
 ## Notes
 - Check the tests for more advanced examples.
-- This a proto-type project currently 
-- Check out my Jiss, project for a way to easily run and recompile templates on server or other visual studio triggers.
+- This a proto-type project. 
+- Check out my Jiss project for a way to easily compile templates on Visual Studio triggers (eg. save).
