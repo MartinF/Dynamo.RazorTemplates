@@ -95,5 +95,35 @@ namespace Dynamo.RazorTemplates.Tests
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
+
+		[TestMethod]
+		public void RemovesNewLinesAndComments()
+		{
+			var source = FileHelper.GetTemplateSource("NewlineAndComments.cshtml");
+
+			var compiler = new TemplateCompiler();
+			var output = compiler.Compile(source);
+
+			var outputResult = output.ToString();
+
+			var expectedResult = "function NewLineAndComments_Tmpl(number){ var t=\"\"; t+=\"<h1>\";t+=number;t+=\"</h1>\"; return t; }";
+
+			Assert.AreEqual(expectedResult, outputResult);
+		}
+
+		[TestMethod]
+		public void FullTypeDeclarationsAreCompiledCorrectly()
+		{
+			var source = FileHelper.GetTemplateSource("FullTypeDeclaration.cshtml");
+
+			var compiler = new TemplateCompiler();
+			var output = compiler.Compile(source);
+
+			var outputResult = output.ToString();
+
+			var expectedResult = "function FullTypeDeclaration_Tmpl(test,what){ var t=\"\"; t+=\"<h1>Extremly Simple - \";t+=test;t+=\" is \";t+=what;t+=\"</h1>\"; return t; }";
+
+			Assert.AreEqual(expectedResult, outputResult);
+		}
 	}
 }
