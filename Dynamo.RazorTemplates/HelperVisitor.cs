@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.SymbolStore;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -117,8 +118,10 @@ namespace Dynamo.RazorTemplates
 
 			foreach (var symbol in span.Symbols.Cast<CSharpSymbol>())
 			{
-				// Ignore NewLine's
-				if (symbol.Type == CSharpSymbolType.NewLine)
+				// Ignore NewLine's and comments
+				if (symbol.Type == CSharpSymbolType.NewLine || 
+					symbol.Type == CSharpSymbolType.Comment ||
+					symbol.Type == CSharpSymbolType.RazorComment)
 				{
 					continue;
 				}

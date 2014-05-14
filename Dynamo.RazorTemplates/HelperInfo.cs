@@ -33,8 +33,12 @@ namespace Dynamo.RazorTemplates
 		public IEnumerable<String> GetParameterNames()
 		{
 			var infoSpan = GetHelperInfoSpan();
-			// All identifiers except the first are parameters ?
-			return infoSpan.Symbols.Cast<CSharpSymbol>().Where(x => x.Type == CSharpSymbolType.Identifier).Skip(1).Select(x => x.Content);
+
+			return infoSpan.Symbols.Cast<CSharpSymbol>()
+				.Where(x => x.Type == CSharpSymbolType.Identifier || x.Type == CSharpSymbolType.Keyword)
+				.Skip(1)						// Skip always the first one as it is the helper declaration
+				.Where((x, i) => i % 2 != 0)	// Select every second so Type declaration is not included
+				.Select(x => x.Content);
 		}
 
 		private Span GetHelperInfoSpan()
