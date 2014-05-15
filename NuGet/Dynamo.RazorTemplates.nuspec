@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Dynamo.RazorTemplates</id>
+        <version>1.1.4</version>
+        <title>Dynamo.RazorTemplates</title>
+        <authors>Martin From</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Compiles your server-side @helper templates into client-side code.</description>
+        <summary>Compiles your server-side @helper templates into client-side code.</summary>
+        <tags>razor templates server-sider client-side</tags>
+        <dependencies>
+            <dependency id="Microsoft.AspNet.Razor" version="3.1.2" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Dynamo.RazorTemplates\bin\Release\Dynamo.RazorTemplates.dll" target="lib\Dynamo.RazorTemplates.dll" />
+    </files>
+</package>
