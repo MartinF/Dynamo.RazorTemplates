@@ -21,7 +21,7 @@ function MyHelper_Tmpl(count) {
 }
 ```
 
-## Benifits
+## Benefits
 - No duplicate code to keep in sync - update server-side and it is reflected client-side.
 - Not yet another JS library to include (saves a request, KB across the wire and browser load time)
 - Pre-compiled - Fast and Saves processing time
