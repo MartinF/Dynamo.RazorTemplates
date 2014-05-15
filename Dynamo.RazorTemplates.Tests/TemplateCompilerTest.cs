@@ -125,5 +125,20 @@ namespace Dynamo.RazorTemplates.Tests
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
+
+		[TestMethod]
+		public void MultipleAdvancedCompilesCorrectly()
+		{
+			var source = FileHelper.GetTemplateSource("MultipleAdvanced.cshtml");
+
+			var compiler = new TemplateCompiler();
+			var output = compiler.Compile(source);
+
+			var outputResult = output.ToString();
+
+			var expectedResult = "function Pager_Tmpl(pages,currentPage){ var t=\"\"; t+=\"<ol\";t+=\" class=\\\"pager\\\"\";t+=\">\";t+=PagerItem_Tmpl(\"<\", (currentPage > 1 ? \"?page=\" + (currentPage - 1) : null));for (var i = 1; i <= pages; i++){t+=PagerItem_Tmpl(i.toString(), (i != currentPage ? \"?page=\" + i : null));}t+=PagerItem_Tmpl(\">\", (currentPage < pages ? \"?page=\" + (currentPage + 1) : null));t+=\"</ol>\"; return t; }function PagerItem_Tmpl(text,url){ var t=\"\"; t+=\"<li><a \";t+=url == null ? \"\" : \"href=\\\"\"+ url + \"\\\"\";t+=\">\";t+=text;t+=\"</a></li>\"; return t; }";
+
+			Assert.AreEqual(expectedResult, outputResult);
+		}
 	}
 }

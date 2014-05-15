@@ -115,9 +115,33 @@ namespace Dynamo.RazorTemplates
 		private void WriteCode(Span span)
 		{
 			var content = new StringBuilder();
+			var previousWasDot = false;
 
 			foreach (var symbol in span.Symbols.Cast<CSharpSymbol>())
 			{
+				if (previousWasDot)
+				{
+					// previous symbol was a "Dot" - check if there is an identifier which is the method call
+
+					// reset
+					previousWasDot = false;
+
+					if (symbol.Type == CSharpSymbolType.Identifier)
+					{
+						// Assume method call - could also check that there is an identifier before the dot? - not needed?
+						var fixedMethodCall = symbol.Content[0].ToString().ToLowerInvariant() + symbol.Content.Substring(1);
+						content.Append(fixedMethodCall);
+
+						continue;
+					}
+				}
+
+				// Register if Dot is encounted
+				if (symbol.Type == CSharpSymbolType.Dot)
+				{
+					previousWasDot = true;
+				}
+
 				// Ignore NewLine's and comments
 				if (symbol.Type == CSharpSymbolType.NewLine || 
 					symbol.Type == CSharpSymbolType.Comment ||
@@ -170,6 +194,15 @@ namespace Dynamo.RazorTemplates
 					continue;
 				}
 
+				// Fix Double quotes
+				if (symbol.Type == HtmlSymbolType.DoubleQuote)
+				{
+					var fixedContent = FixDoubleQuotes(symbol.Content);
+					content.Append(fixedContent);
+					
+					continue;
+				}
+
 				content.Append(symbol.Content);
 			}
 
@@ -181,6 +214,11 @@ namespace Dynamo.RazorTemplates
 
 				WriteToVariabel(content.ToString());			
 			}
+		}
+
+		private String FixDoubleQuotes(String str)
+		{
+			return str.Replace("\"", "\\\"");
 		}
 
 		private String RemoveControlCharacters(String content)

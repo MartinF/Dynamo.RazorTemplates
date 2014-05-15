@@ -71,6 +71,7 @@
     <None Include="Templates\Advanced.cshtml" />
     <None Include="Templates\Loop.cshtml" />
     <None Include="Templates\FullTypeDeclaration.cshtml" />
+    <None Include="Templates\MultipleAdvanced.cshtml" />
     <None Include="Templates\Parameters.cshtml" />
     <None Include="Templates\Multiple.cshtml" />
     <None Include="Templates\NewlineAndComments.cshtml" />
