@@ -1,0 +1,25 @@
+﻿@helper Pager_Tmpl(int pages, int currentPage)
+{
+	<ol class="pager">
+		@* Create backwards arrow *@
+		@PagerItem_Tmpl("<", (currentPage > 1 ? "?page=" + (currentPage - 1) : null))
+	
+		@* Create all page numbers *@
+		@for (var i = 1; i <= pages; i++)
+		{		
+			@PagerItem_Tmpl(i.ToString(), (i != currentPage ? "?page=" + i : null))
+		}
+
+		@* Create forward arrow *@
+		@PagerItem_Tmpl(">", (currentPage < pages ? "?page=" + (currentPage + 1) : null))	
+	</ol>
+}
+
+@helper PagerItem_Tmpl(string text, string url) 
+{
+	<li>
+		<a @(url == null ? "" : "href=\""+ url + "\"")>
+			@text
+		</a>
+	</li>
+}
