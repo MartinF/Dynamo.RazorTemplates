@@ -16,7 +16,7 @@ namespace Dynamo.RazorTemplates.Tests
 
 			var outputResult = output.ToString();
 			
-			var expectedResult = "function Simple_Tmpl(){ var t=\"\"; t+=\"<h1>Hello - Simple</h1>\"; return t; }";
+			var expectedResult = "function simple_Tmpl(){ var t=\"\"; t+=\"<h1>Hello - Simple</h1>\"; return t; }";
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
@@ -31,7 +31,7 @@ namespace Dynamo.RazorTemplates.Tests
 
 			var outputResult = output.ToString();
 
-			var expectedResult = "function SimpleStatement_Tmpl(){ var t=\"\"; t+=\"<h1>Hello - \";t+=true ? \"Yes\" : \"No\";t+=\"</h1>\"; return t; }";
+			var expectedResult = "function simpleStatement_Tmpl(){ var t=\"\"; t+=\"<h1>Hello - \";t+=true ? \"Yes\" : \"No\";t+=\"</h1>\"; return t; }";
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
@@ -46,7 +46,7 @@ namespace Dynamo.RazorTemplates.Tests
 
 			var outputResult = output.ToString();
 
-			var expectedResult = "function Parameters_Tmpl(test,what){ var t=\"\"; t+=\"<h1>Extremly Simple - \";t+=test;t+=\" is \";t+=what;t+=\"</h1>\"; return t; }";
+			var expectedResult = "function parameters_Tmpl(test,what){ var t=\"\"; t+=\"<h1>Extremly Simple - \";t+=test;t+=\" is \";t+=what;t+=\"</h1>\"; return t; }";
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
@@ -61,7 +61,7 @@ namespace Dynamo.RazorTemplates.Tests
 
 			var outputResult = output.ToString();
 
-			var expectedResult = "function Loop_Tmpl(count){ var t=\"\"; for (var i = 0; i < count; i++){t+=\"<h1>Extremly Simple - \";t+=i;t+=\"</h1>\";} return t; }";
+			var expectedResult = "function loop_Tmpl(count){ var t=\"\"; for (var i = 0; i < count; i++){t+=\"<h1>Extremly Simple - \";t+=i;t+=\"</h1>\";} return t; }";
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
@@ -76,7 +76,7 @@ namespace Dynamo.RazorTemplates.Tests
 
 			var outputResult = output.ToString();
 
-			var expectedResult = "function Multiple1_Tmpl(){ var t=\"\"; t+=\"<h1>Hello - 1</h1>\"; return t; }function Multiple2_Tmpl(){ var t=\"\"; t+=\"<h1>Hello - 2</h1>\"; return t; }";
+			var expectedResult = "function multiple1_Tmpl(){ var t=\"\"; t+=\"<h1>Hello - 1</h1>\"; return t; }function multiple2_Tmpl(){ var t=\"\"; t+=\"<h1>Hello - 2</h1>\"; return t; }";
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
@@ -91,7 +91,7 @@ namespace Dynamo.RazorTemplates.Tests
 
 			var outputResult = output.ToString();
 
-			var expectedResult = "function Advanced_Tmpl(count){ var t=\"\"; for (var i = 0; i < count; i++){t+=\"<h1>Extremly Simple - \";t+=i;t+=\"</h1>\";t+=\"<div>\";t+=i + 100 * 0.5;t+=\"</div>\";t+=i == 3 ? \"equals 3\" : \"not equal 3\" ;} return t; }";
+			var expectedResult = "function advanced_Tmpl(count){ var t=\"\"; for (var i = 0; i < count; i++){t+=\"<h1>Extremly Simple - \";t+=i;t+=\"</h1>\";t+=\"<div>\";t+=i + 100 * 0.5;t+=\"</div>\";t+=i == 3 ? \"equals 3\" : \"not equal 3\" ;} return t; }";
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
@@ -106,7 +106,7 @@ namespace Dynamo.RazorTemplates.Tests
 
 			var outputResult = output.ToString();
 
-			var expectedResult = "function NewLineAndComments_Tmpl(number){ var t=\"\"; t+=\"<h1>\";t+=number;t+=\"</h1>\"; return t; }";
+			var expectedResult = "function newLineAndComments_Tmpl(number){ var t=\"\"; t+=\"<h1>\";t+=number;t+=\"</h1>\"; return t; }";
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
@@ -121,7 +121,7 @@ namespace Dynamo.RazorTemplates.Tests
 
 			var outputResult = output.ToString();
 
-			var expectedResult = "function FullTypeDeclaration_Tmpl(test,what){ var t=\"\"; t+=\"<h1>Extremly Simple - \";t+=test;t+=\" is \";t+=what;t+=\"</h1>\"; return t; }";
+			var expectedResult = "function fullTypeDeclaration_Tmpl(test,what){ var t=\"\"; t+=\"<h1>Extremly Simple - \";t+=test;t+=\" is \";t+=what;t+=\"</h1>\"; return t; }";
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
@@ -136,7 +136,37 @@ namespace Dynamo.RazorTemplates.Tests
 
 			var outputResult = output.ToString();
 
-			var expectedResult = "function Pager_Tmpl(pages,currentPage){ var t=\"\"; t+=\"<ol\";t+=\" class=\\\"pager\\\"\";t+=\">\";t+=PagerItem_Tmpl(\"<\", (currentPage > 1 ? \"?page=\" + (currentPage - 1) : null));for (var i = 1; i <= pages; i++){t+=PagerItem_Tmpl(i.toString(), (i != currentPage ? \"?page=\" + i : null));}t+=PagerItem_Tmpl(\">\", (currentPage < pages ? \"?page=\" + (currentPage + 1) : null));t+=\"</ol>\"; return t; }function PagerItem_Tmpl(text,url){ var t=\"\"; t+=\"<li><a \";t+=url == null ? \"\" : \"href=\\\"\"+ url + \"\\\"\";t+=\">\";t+=text;t+=\"</a></li>\"; return t; }";
+			var expectedResult = "function pager_Tmpl(pages,currentPage){ var t=\"\"; t+=\"<ol\";t+=\" class=\\\"pager\\\"\";t+=\">\";t+=pagerItem_Tmpl(\"<\", (currentPage > 1 ? \"?page=\" + (currentPage - 1) : null));for (var i = 1; i <= pages; i++){t+=pagerItem_Tmpl(i.toString(), (i != currentPage ? \"?page=\" + i : null));}t+=pagerItem_Tmpl(\">\", (currentPage < pages ? \"?page=\" + (currentPage + 1) : null));t+=\"</ol>\"; return t; }function pagerItem_Tmpl(text,url){ var t=\"\"; t+=\"<li><a \";t+=url == null ? \"\" : \"href=\\\"\"+ url + \"\\\"\";t+=\">\";t+=text;t+=\"</a></li>\"; return t; }";
+
+			Assert.AreEqual(expectedResult, outputResult);
+		}
+
+		[TestMethod]
+		public void SimpleHtmlRawHelperCompilesCorrectly()
+		{
+			var source = FileHelper.GetTemplateSource("SimpleHelper.cshtml");
+
+			var compiler = new TemplateCompiler();
+			var output = compiler.Compile(source);
+
+			var outputResult = output.ToString();
+
+			var expectedResult = "function simple_Tmpl(){ var t=\"\"; t+=\"<h1 \";t+=\"class=\\\"Whatever\\\"\";t+=\">Hello - </h1>\"; return t; }";
+
+			Assert.AreEqual(expectedResult, outputResult);
+		}
+
+		[TestMethod]
+		public void SimpleHtmlRawHelperStatementCompilesCorrectly()
+		{
+			var source = FileHelper.GetTemplateSource("SimpleHelper-Statement.cshtml");
+
+			var compiler = new TemplateCompiler();
+			var output = compiler.Compile(source);
+
+			var outputResult = output.ToString();
+
+			var expectedResult = "function simpleStatement_Tmpl(){ var t=\"\"; t+=\"<h1 \";t+=true ? \"class=\\\"true\\\"\" : \"class=\\\"false\\\"\";t+=\">Hello</h1>\"; return t; }";
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
