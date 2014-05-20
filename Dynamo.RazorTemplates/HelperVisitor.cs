@@ -36,7 +36,7 @@ namespace Dynamo.RazorTemplates
 		public void Visit()
 		{
 			// Write Start
-			var functionName = ConvertFirstLetterToLowerCase(HelperInfo.Name);
+			var functionName = StringHelper.ConvertFirstLetterToLowerCase(HelperInfo.Name);
 			Write("function " + functionName + "(");
 			var parameters = String.Join(",", HelperInfo.GetParameterNames());
 			Write(parameters);
@@ -140,31 +140,38 @@ namespace Dynamo.RazorTemplates
 				// Remove Control Characters
 				if (symbol.Type == CSharpSymbolType.WhiteSpace)
 				{
-					var filteredContent = RemoveControlCharacters(symbol.Content);
+					var filteredContent = StringHelper.RemoveControlCharacters(symbol.Content);
 					
 					output.Append(filteredContent);
 					continue;
 				}
 
+				// Support Foreach
+				if (symbol.Type == CSharpSymbolType.Keyword && symbol.Content == "foreach")
+				{
+					output.Append("for");
+					continue;
+				}
+				
 				// If Html.Raw method is called remove it
-				if (IsHelperMethodCall(symbols, i, "Html", "Raw"))
+				if (SymbolHelper.IsHelperMethodCall(symbols, i, "Html", "Raw"))
 				{
 					// Ignore the next 3 symbols "." "Raw" "("
 					i = i + 3;
 
 					// Find closing/right Parenthesis and ignore it
-					ignoreIndex = GetClosingParenthesisIndex(symbols, i + 1);
+					ignoreIndex = SymbolHelper.GetClosingParenthesisIndex(symbols, i + 1);
 
 					continue;
 				}
 
-				if (IsMethodCall(symbols, i))
+				if (SymbolHelper.IsMethodCall(symbols, i) || SymbolHelper.IsPropertyCall(symbols, i))
 				{
 					// fix first letter to lowercase
-					var methodName = symbol.Content;
-					var fixedMethodName = ConvertFirstLetterToLowerCase(methodName);
+					var name = symbol.Content;
+					var fixedName = StringHelper.ConvertFirstLetterToLowerCase(name);
 					
-					output.Append(fixedMethodName);
+					output.Append(fixedName);
 					continue;
 				}
 
@@ -198,16 +205,16 @@ namespace Dynamo.RazorTemplates
 				// Remove Control Characters
 				if (symbol.Type == HtmlSymbolType.WhiteSpace)
 				{
-					var filteredContent = RemoveControlCharacters(symbol.Content);
+					var filteredContent = StringHelper.RemoveControlCharacters(symbol.Content);
 					content.Append(filteredContent);
 
 					continue;
 				}
 
 				// Fix Double quotes
-				if (symbol.Type == HtmlSymbolType.DoubleQuote)		// TODO: Shouldnt happen ?????? 
+				if (symbol.Type == HtmlSymbolType.DoubleQuote)
 				{
-					var fixedContent = FixDoubleQuotes(symbol.Content);
+					var fixedContent = StringHelper.FixDoubleQuotes(symbol.Content);
 					content.Append(fixedContent);
 
 					continue;
@@ -226,7 +233,6 @@ namespace Dynamo.RazorTemplates
 			}
 		}
 
-
 		private void Write(String content)
 		{
 			Output.Write(content);
@@ -236,118 +242,6 @@ namespace Dynamo.RazorTemplates
 		{
 			if (content.Length > 0)
 				Write("t+=" + content + ";");
-		}
-
-
-
-		private static String FixDoubleQuotes(String str)
-		{
-			return str.Replace("\"", "\\\"");
-		}
-
-		private static String RemoveControlCharacters(String content)
-		{
-			// Could be multiple whitespace in a row which all need to be filtered ?
-
-			var filteredContent = "";
-			for (int i = 0, length = content.Length; i < length; i++)
-			{
-				char c = content[i];
-
-				// Do not include Control characters in filtered content
-				if (!Char.IsControl(c))
-				{
-					filteredContent += c;
-				}
-			}
-
-			return filteredContent;
-		}
-
-		private static int GetClosingParenthesisIndex(CSharpSymbol[] symbols, int startIndex)
-		{
-			var leftParenthesisCount = 0;
-
-			for (int i = startIndex; i < symbols.Length; i++)
-			{
-				var symbol = symbols[i];
-
-				if (symbol.Type == CSharpSymbolType.LeftParenthesis)
-				{
-					leftParenthesisCount++;
-					continue;
-				}
-
-				if (symbol.Type == CSharpSymbolType.RightParenthesis)
-				{
-					if (leftParenthesisCount > 0)
-						leftParenthesisCount--;
-					else
-						return i;	// found the closing one!
-
-					continue;
-				}
-			}
-
-			return -1;
-		}
-
-		private static String ConvertFirstLetterToLowerCase(String str)
-		{
-			return str[0].ToString().ToLowerInvariant() + str.Substring(1);
-		}
-
-		private static Boolean IsMethodCall(CSharpSymbol[] symbols, int targetIndex)
-		{
-			var targetSymbol = symbols[targetIndex];
-
-			// Make sure it is an identifier
-			if (targetSymbol.Type != CSharpSymbolType.Identifier)
-				return false;
-
-			// target symbol is an identifier
-			// Check that it is followed by a LeftParenthesis
-
-			var parenthesesIndex = targetIndex + 1;
-
-			// make sure that the index doesnt go out of bounds
-			if (parenthesesIndex >= symbols.Length)
-				return false;	// no left LeftParenthesis
-
-			if (symbols[parenthesesIndex].Type == CSharpSymbolType.WhiteSpace)
-				parenthesesIndex++; // adjust
-
-			// If not a left parenthesis it is not a method call
-			if (parenthesesIndex >= symbols.Length || symbols[parenthesesIndex].Type != CSharpSymbolType.LeftParenthesis)
-				return false;
-
-			return true;
-		}
-
-		private static Boolean IsHelperMethodCall(CSharpSymbol[] symbols, int targetIndex, String helperName, String methodCallName)
-		{
-			var targetSymbol = symbols[targetIndex];
-
-			// Make sure it is an identifier
-			if (targetSymbol.Type != CSharpSymbolType.Identifier)
-				return false;
-
-			// Check the name
-			if (targetSymbol.Content != helperName)
-				return false;
-
-			// Make sure it is preceeded with a Dot ("Html.") 
-			if (targetIndex + 1 >= symbols.Length || symbols[targetIndex + 1].Type != CSharpSymbolType.Dot)
-				return false;
-
-			if (targetIndex + 2 >= symbols.Length || !IsMethodCall(symbols, targetIndex + 2))
-				return false;
-
-			// Check name of method called
-			if (symbols[targetIndex + 2].Content != methodCallName)
-				return false;
-
-			return true;
 		}
 	}
 }

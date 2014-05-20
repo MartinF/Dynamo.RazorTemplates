@@ -52,21 +52,6 @@ namespace Dynamo.RazorTemplates.Tests
 		}
 
 		[TestMethod]
-		public void CanCompileLoopTemplate()
-		{
-			var source = FileHelper.GetTemplateSource("Loop.cshtml");
-
-			var compiler = new TemplateCompiler();
-			var output = compiler.Compile(source);
-
-			var outputResult = output.ToString();
-
-			var expectedResult = "function loop_Tmpl(count){ var t=\"\"; for (var i = 0; i < count; i++){t+=\"<h1>Extremly Simple - \";t+=i;t+=\"</h1>\";} return t; }";
-
-			Assert.AreEqual(expectedResult, outputResult);
-		}
-
-		[TestMethod]
 		public void CanCompileMultipleTemplates()
 		{
 			var source = FileHelper.GetTemplateSource("Multiple.cshtml");
@@ -167,6 +152,67 @@ namespace Dynamo.RazorTemplates.Tests
 			var outputResult = output.ToString();
 
 			var expectedResult = "function simpleStatement_Tmpl(){ var t=\"\"; t+=\"<h1 \";t+=true ? \"class=\\\"true\\\"\" : \"class=\\\"false\\\"\";t+=\">Hello</h1>\"; return t; }";
+
+			Assert.AreEqual(expectedResult, outputResult);
+		}
+
+		[TestMethod]
+		public void ModelTemplateCompilesCorrectly()
+		{
+			// Tests both method and property name is converted to first letter lowercase
+			var source = FileHelper.GetTemplateSource("Model.cshtml");
+
+			var compiler = new TemplateCompiler();
+			var output = compiler.Compile(source);
+
+			var outputResult = output.ToString();
+
+			var expectedResult = "function model_Tmpl(model){ var t=\"\"; t+=\"<h1>Model - \";t+=model.getString();t+=\" is \";t+=model.string;t+=\"</h1>\"; return t; }";
+
+			Assert.AreEqual(expectedResult, outputResult);
+		}
+
+		[TestMethod]
+		public void CanCompileForLoopTemplate()
+		{
+			var source = FileHelper.GetTemplateSource("ForLoop.cshtml");
+
+			var compiler = new TemplateCompiler();
+			var output = compiler.Compile(source);
+
+			var outputResult = output.ToString();
+
+			var expectedResult = "function loop_Tmpl(count){ var t=\"\"; for (var i = 0; i < count; i++){t+=\"<h1>Extremly Simple - \";t+=i;t+=\"</h1>\";} return t; }";
+
+			Assert.AreEqual(expectedResult, outputResult);
+		}
+
+		[TestMethod]
+		public void CanCompileForLoopAdvancedTemplate()
+		{
+			var source = FileHelper.GetTemplateSource("ForLoop-Advanced.cshtml");
+
+			var compiler = new TemplateCompiler();
+			var output = compiler.Compile(source);
+
+			var outputResult = output.ToString();
+
+			var expectedResult = "function loop_Tmpl(array){ var t=\"\"; for (var i = 0; i < array.length; i++){t+=\"<h1>Extremly Simple - \";t+=i;t+=\"</h1>\";} return t; }";
+
+			Assert.AreEqual(expectedResult, outputResult);
+		}
+
+		[TestMethod]
+		public void CanCompileForEachLoopTemplate()
+		{
+			var source = FileHelper.GetTemplateSource("ForEachLoop.cshtml");
+
+			var compiler = new TemplateCompiler();
+			var output = compiler.Compile(source);
+
+			var outputResult = output.ToString();
+
+			var expectedResult = "function forEachLoop_Tmpl(models){ var t=\"\"; for (var model in models){t+=\"<h1>Model output - \";t+=model.string;t+=\"</h1>\";} return t; }";
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}

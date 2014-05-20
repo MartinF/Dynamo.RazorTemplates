@@ -51,6 +51,8 @@
     <Compile Include="RazorParserExtensions.cs" />
     <Compile Include="RazorParserLanguage.cs" />
     <Compile Include="RazorParser.cs" />
+    <Compile Include="StringHelper.cs" />
+    <Compile Include="SymbolHelper.cs" />
     <Compile Include="TemplateCompiler.cs" />
     <Compile Include="TemplateCompilerExtensions.cs" />
   </ItemGroup>
