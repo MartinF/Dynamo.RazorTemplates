@@ -76,6 +76,7 @@
     <None Include="Templates\FullTypeDeclaration.cshtml" />
     <None Include="Templates\MultipleAdvanced.cshtml" />
     <None Include="Templates\Model.cshtml" />
+    <None Include="Templates\Parameters-Generics.cshtml" />
     <None Include="Templates\Parameters.cshtml" />
     <None Include="Templates\Multiple.cshtml" />
     <None Include="Templates\NewlineAndComments.cshtml" />

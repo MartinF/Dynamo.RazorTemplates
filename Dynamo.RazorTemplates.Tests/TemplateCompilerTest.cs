@@ -216,5 +216,20 @@ namespace Dynamo.RazorTemplates.Tests
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
+
+		[TestMethod]
+		public void CanCompileGenericParametersTemplate()
+		{
+			var source = FileHelper.GetTemplateSource("Parameters-Generics.cshtml");
+
+			var compiler = new TemplateCompiler();
+			var output = compiler.Compile(source);
+
+			var outputResult = output.ToString();
+
+			var expectedResult = "function parameters_Tmpl(tuple,model){ var t=\"\"; t+=\"<h1>Extremly Simple - \";t+=tuple.item1;t+=\" - \";t+=model.string;t+=\"</h1>\"; return t; }";
+
+			Assert.AreEqual(expectedResult, outputResult);
+		}
 	}
 }

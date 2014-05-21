@@ -1,0 +1,7 @@
+﻿@using System
+@using Dynamo.RazorTemplates.Tests
+
+@helper Parameters_Tmpl(Tuple<String> tuple , TestModel model)
+{
+	<h1>Extremly Simple - @tuple.Item1 - @model.String</h1>
+}

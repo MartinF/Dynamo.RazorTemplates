@@ -34,11 +34,26 @@ namespace Dynamo.RazorTemplates
 		{
 			var infoSpan = GetHelperInfoSpan();
 
-			return infoSpan.Symbols.Cast<CSharpSymbol>()
-				.Where(x => x.Type == CSharpSymbolType.Identifier || x.Type == CSharpSymbolType.Keyword)
-				.Skip(1)						// Skip always the first one as it is the helper declaration
-				.Where((x, i) => i % 2 != 0)	// Select every second so Type declaration is not included
-				.Select(x => x.Content);
+			var sort1 = infoSpan.Symbols.Cast<CSharpSymbol>();
+
+			// Get all of type Identifier, Keyword or Comma
+			var sort2 = sort1.Where(x => x.Type == CSharpSymbolType.Identifier || x.Type == CSharpSymbolType.Keyword || x.Type == CSharpSymbolType.Comma);
+
+			// Always skip the first one as it is the helper declaration
+			var sort3 = sort2.Skip(1);
+
+			// Keep selecting the last symbol seperated by comma
+			String paramName = "";
+			foreach (var symbol in sort3)
+			{
+				if (symbol.Type == CSharpSymbolType.Comma)
+					yield return paramName;
+
+				paramName = symbol.Content;
+			}
+
+			// When it has reached the end make sure to return the last found parameter
+			yield return paramName;
 		}
 
 		private Span GetHelperInfoSpan()
