@@ -12,7 +12,7 @@ A template is defined by the razor @helper syntax.
 The template will be compiled into the following client-side template (*formatted for nice display)
 
 ```JAVASCRIPT
-function MyHelper_Tmpl(count) { 
+function myHelper_Tmpl(count) { 
 	var t="";
 	t+="<h1>Hello world! - ";
 	t+=count;
