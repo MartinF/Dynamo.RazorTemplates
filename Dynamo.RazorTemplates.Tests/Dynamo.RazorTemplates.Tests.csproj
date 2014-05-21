@@ -74,6 +74,7 @@
     <None Include="Templates\ForLoop-Advanced.cshtml" />
     <None Include="Templates\ForLoop.cshtml" />
     <None Include="Templates\FullTypeDeclaration.cshtml" />
+    <None Include="Templates\MultipleWithModel.cshtml" />
     <None Include="Templates\MultipleAdvanced.cshtml" />
     <None Include="Templates\Model.cshtml" />
     <None Include="Templates\Parameters-Generics.cshtml" />

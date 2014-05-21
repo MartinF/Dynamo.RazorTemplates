@@ -231,5 +231,20 @@ namespace Dynamo.RazorTemplates.Tests
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
+
+		[TestMethod]
+		public void CanCompileMultipleTemplatesWithModels()
+		{
+			var source = FileHelper.GetTemplateSource("MultipleWithModel.cshtml");
+
+			var compiler = new TemplateCompiler();
+			var output = compiler.Compile(source);
+
+			var outputResult = output.ToString();
+
+			var expectedResult = "function pager_Tmpl(int,model){ var t=\"\"; t+=pagerItem_Tmpl(\"<\", (model.item2 > 1 ? \"?page=\" + (model.item2 - 1) : null));for (var i = 1; i <= model.item1; i++){t+=pagerItem_Tmpl(i.toString(), (i != model.item2 ? \"?page=\" + i : null));}t+=pagerItem_Tmpl(\">\", (model.item2 < model.item1 ? \"?page=\" + (model.item2 + 1) : null)); return t; }function pagerItem_Tmpl(text,url){ var t=\"\"; t+=\"<li><a \";t+=url == null ? \"\" : \"href=\\\"\" + url + \"\\\"\";t+=\">\";t+=text;t+=\"</a></li>\"; return t; }";
+
+			Assert.AreEqual(expectedResult, outputResult);
+		}
 	}
 }

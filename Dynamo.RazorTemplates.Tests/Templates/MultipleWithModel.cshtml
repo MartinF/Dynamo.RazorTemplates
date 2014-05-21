@@ -1,0 +1,25 @@
+﻿@using System
+
+@helper Pager_Tmpl(Tuple<int, int> model)
+{
+	@* Create backwards arrow *@
+	@PagerItem_Tmpl("<", (model.Item2 > 1 ? "?page=" + (model.Item2 - 1) : null))
+	
+	@* Create all page numbers *@
+	for (var i = 1; i <= model.Item1; i++)
+	{		
+		@PagerItem_Tmpl(i.ToString(), (i != model.Item2 ? "?page=" + i : null))
+	}
+		
+	@* Create forward arrow *@
+	@PagerItem_Tmpl(">", (model.Item2 < model.Item1 ? "?page=" + (model.Item2 + 1) : null))	
+}
+
+@helper PagerItem_Tmpl(String text, String url) 
+{
+	<li>
+		<a @(url == null ? Html.Raw("") : Html.Raw("href=\"" + url + "\""))>
+			@text
+		</a>
+	</li>
+}

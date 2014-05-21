@@ -51,9 +51,13 @@ namespace Dynamo.RazorTemplates
 			if (symbols[targetIndex - 2].Type != CSharpSymbolType.Identifier)
 				return false;
 
-			// If targetIndex is not the last symbol and the symbol following is not a dot or semicolon
-			if (targetIndex + 1 < symbols.Length && !(symbols[targetIndex + 1].Type == CSharpSymbolType.Dot || symbols[targetIndex + 1].Type == CSharpSymbolType.Semicolon))
-				return false;
+			// Make sure that if there is a next symbol it is either a dot, semicolon or whitespace
+			if (targetIndex + 1 < symbols.Length)
+			{
+				var nextSymbol = symbols[targetIndex + 1];
+				if (!(symbols[targetIndex + 1].Type == CSharpSymbolType.Dot || symbols[targetIndex + 1].Type == CSharpSymbolType.Semicolon || nextSymbol.Type == CSharpSymbolType.WhiteSpace))
+					return false;
+			}
 
 			return true;
 		}
