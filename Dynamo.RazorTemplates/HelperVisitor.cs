@@ -117,67 +117,9 @@ namespace Dynamo.RazorTemplates
 
 		private void WriteCode(Span span)
 		{
-			var output = new StringBuilder();
 			var symbols = span.Symbols.Cast<CSharpSymbol>().ToArray();
-			var ignoreIndex = -1;
-			
-			for (int i = 0; i < symbols.Length; i++)
-			{
-				var symbol = symbols[i];
 
-				// Ignore index
-				if (i == ignoreIndex)
-					continue;
-
-				// Ignore NewLine's and comments
-				if (symbol.Type == CSharpSymbolType.NewLine ||
-					symbol.Type == CSharpSymbolType.Comment ||
-					symbol.Type == CSharpSymbolType.RazorComment)
-				{
-					continue;
-				}
-
-				// Remove Control Characters
-				if (symbol.Type == CSharpSymbolType.WhiteSpace)
-				{
-					var filteredContent = StringHelper.RemoveControlCharacters(symbol.Content);
-					
-					output.Append(filteredContent);
-					continue;
-				}
-
-				// Support Foreach
-				if (symbol.Type == CSharpSymbolType.Keyword && symbol.Content == "foreach")
-				{
-					output.Append("for");
-					continue;
-				}
-				
-				// If Html.Raw method is called remove it
-				if (SymbolHelper.IsHelperMethodCall(symbols, i, "Html", "Raw"))
-				{
-					// Ignore the next 3 symbols "." "Raw" "("
-					i = i + 3;
-
-					// Find closing/right Parenthesis and ignore it
-					ignoreIndex = SymbolHelper.GetClosingParenthesisIndex(symbols, i + 1);
-
-					continue;
-				}
-
-				if (SymbolHelper.IsMethodCall(symbols, i) || SymbolHelper.IsPropertyCall(symbols, i))
-				{
-					// fix first letter to lowercase
-					var name = symbol.Content;
-					var fixedName = StringHelper.ConvertFirstLetterToLowerCase(name);
-					
-					output.Append(fixedName);
-					continue;
-				}
-
-				//Any other just append content
-				output.Append(symbol.Content);
-			}
+			var output = SymbolHelper.ProcessSymbols(symbols);
 
 			if (span.Parent.Type == BlockType.Statement) // eg. for loop
 			{

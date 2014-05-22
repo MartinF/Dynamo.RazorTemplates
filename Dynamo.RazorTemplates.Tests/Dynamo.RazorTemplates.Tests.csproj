@@ -81,8 +81,8 @@
     <None Include="Templates\Parameters.cshtml" />
     <None Include="Templates\Multiple.cshtml" />
     <None Include="Templates\NewlineAndComments.cshtml" />
-    <None Include="Templates\SimpleHelper-Statement.cshtml" />
-    <None Include="Templates\SimpleHelper.cshtml" />
+    <None Include="Templates\Helper-HtmlRaw-Statement.cshtml" />
+    <None Include="Templates\Helper-HtmlRaw.cshtml" />
     <None Include="Templates\Simple-Statement.cshtml" />
     <None Include="Templates\Simple.cshtml" />
   </ItemGroup>
