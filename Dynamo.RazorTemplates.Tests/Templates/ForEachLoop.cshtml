@@ -1,9 +1,9 @@
 ﻿@using Dynamo.RazorTemplates.Tests
 
-@helper ForEachLoop_Tmpl(TestModel[] models)
+@helper ForEachLoop_Tmpl(TestModel model)
 {
-	foreach (var model in models)
+	foreach (var item in model.Models)
 	{
-		<h1>Model output - @model.String</h1>
+		<h1>Model output - @item.String</h1>
 	}
 }

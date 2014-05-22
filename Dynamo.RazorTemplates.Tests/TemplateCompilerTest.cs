@@ -129,7 +129,7 @@ namespace Dynamo.RazorTemplates.Tests
 		[TestMethod]
 		public void SimpleHtmlRawHelperCompilesCorrectly()
 		{
-			var source = FileHelper.GetTemplateSource("SimpleHelper.cshtml");
+			var source = FileHelper.GetTemplateSource("Helper-HtmlRaw.cshtml");
 
 			var compiler = new TemplateCompiler();
 			var output = compiler.Compile(source);
@@ -144,7 +144,7 @@ namespace Dynamo.RazorTemplates.Tests
 		[TestMethod]
 		public void SimpleHtmlRawHelperStatementCompilesCorrectly()
 		{
-			var source = FileHelper.GetTemplateSource("SimpleHelper-Statement.cshtml");
+			var source = FileHelper.GetTemplateSource("Helper-HtmlRaw-Statement.cshtml");
 
 			var compiler = new TemplateCompiler();
 			var output = compiler.Compile(source);
@@ -203,21 +203,6 @@ namespace Dynamo.RazorTemplates.Tests
 		}
 
 		[TestMethod]
-		public void CanCompileForEachLoopTemplate()
-		{
-			var source = FileHelper.GetTemplateSource("ForEachLoop.cshtml");
-
-			var compiler = new TemplateCompiler();
-			var output = compiler.Compile(source);
-
-			var outputResult = output.ToString();
-
-			var expectedResult = "function forEachLoop_Tmpl(models){ var t=\"\"; for (var model in models){t+=\"<h1>Model output - \";t+=model.string;t+=\"</h1>\";} return t; }";
-
-			Assert.AreEqual(expectedResult, outputResult);
-		}
-
-		[TestMethod]
 		public void CanCompileGenericParametersTemplate()
 		{
 			var source = FileHelper.GetTemplateSource("Parameters-Generics.cshtml");
@@ -243,6 +228,21 @@ namespace Dynamo.RazorTemplates.Tests
 			var outputResult = output.ToString();
 
 			var expectedResult = "function pager_Tmpl(int,model){ var t=\"\"; t+=pagerItem_Tmpl(\"<\", (model.item2 > 1 ? \"?page=\" + (model.item2 - 1) : null));for (var i = 1; i <= model.item1; i++){t+=pagerItem_Tmpl(i.toString(), (i != model.item2 ? \"?page=\" + i : null));}t+=pagerItem_Tmpl(\">\", (model.item2 < model.item1 ? \"?page=\" + (model.item2 + 1) : null)); return t; }function pagerItem_Tmpl(text,url){ var t=\"\"; t+=\"<li><a \";t+=url == null ? \"\" : \"href=\\\"\" + url + \"\\\"\";t+=\">\";t+=text;t+=\"</a></li>\"; return t; }";
+
+			Assert.AreEqual(expectedResult, outputResult);
+		}
+
+		[TestMethod]
+		public void CanCompileForEachLoopTemplate()
+		{
+			var source = FileHelper.GetTemplateSource("ForEachLoop.cshtml");
+
+			var compiler = new TemplateCompiler();
+			var output = compiler.Compile(source);
+
+			var outputResult = output.ToString();
+
+			var expectedResult = "function forEachLoop_Tmpl(model){ var t=\"\"; for(var __i0=0;__i0<model.models.length;__i0++){ var item=model.models[__i0];t+=\"<h1>Model output - \";t+=item.string;t+=\"</h1>\";} return t; }";
 
 			Assert.AreEqual(expectedResult, outputResult);
 		}
